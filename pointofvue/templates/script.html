@@ -1,0 +1,19 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{% for data_name, data in vue_data.items %}
+{{ data | json_script:data_name }}
+{% endfor %}
+<script>
+    var data = {};
+{% for data_name, data in vue_data.items %}
+    data['{{ data_name }}'] = JSON.parse(document.getElementById('{{ data_name }}').textContent);
+{% endfor %}
+var app = new Vue({
+    el: '#app',
+    components: {
+    },
+    delimiters: ['${','}'],
+    data: function() { return data; },
+    methods: {}
+});
+</script>
+
