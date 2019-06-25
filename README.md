@@ -9,10 +9,10 @@ pip install PointOfVue
 ```
 
 Add `pointofvue` to your Django installed apps:
-```
+```python
 INSTALLED_APPS = [
-	...
-	'pointofvue',
+    # other apps ...
+    'pointofvue',
 ]
 ```
 
@@ -40,4 +40,36 @@ In your template, write your Vue code in a `#app` element and use `${` and `}` f
 
 {% load pointofvue %}
 {% vue vue_ctx %}
+```
+
+## Custom JavaScript
+
+It is likely that you won't be able to get away with just writing HTML Vue alone, you may need to define methods and other JS native entities in custom JavaScript.
+
+ > **Note:** pointofvue encourages you to not write inline JavaScript in your Django HTML templates. Write separate JS files and serve them via staticfiles instead
+
+Define a Vue entry point that exports your Vue data. It may look like this:
+```javascript
+import MyCustomComponent from './my-component.js';
+
+const components = {
+    MyCustomComponent,
+};
+
+export {
+    components,
+};
+```
+
+Build that JS file (target as a library if using vue-cli-service). Then register your script with the Python VueContext in your view:
+```python
+vue_ctx.add_script('myscript')
+```
+
+Now you can use your custom component in your template:
+```html
+<div id="app">
+    <b>My Custom Component</b>
+    <MyCustomComponent />
+</div>
 ```

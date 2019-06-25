@@ -8,6 +8,5 @@ register = template.Library()
 def vue(vue_ctx):
     if not isinstance(vue_ctx, VueContext):
         raise TypeError("Argument to 'vue' template must be a VueContext")
-    return {
-        'vue_data': vue_ctx.data,
-    }
+
+    return vue_ctx._to_render()

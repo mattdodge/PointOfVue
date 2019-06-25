@@ -1,19 +1,30 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-{% for data_name, data in vue_data.items %}
-{{ data | json_script:data_name }}
+{% for data_name, data_val in data.items %}
+{{ data_val | json_script:data_name }}
 {% endfor %}
+
+{% load static %}
+{% for script_loc in script_locs %}
+<script src="{% static script_loc %}"></script>
+{% endfor %}
+
 <script>
     var data = {};
-{% for data_name, data in vue_data.items %}
+{% for data_name in data %}
     data['{{ data_name }}'] = JSON.parse(document.getElementById('{{ data_name }}').textContent);
 {% endfor %}
-var app = new Vue({
-    el: '#app',
-    components: {
-    },
-    delimiters: ['${','}'],
-    data: function() { return data; },
-    methods: {}
-});
+
+    var components = {};
+{% for script_id in scripts %}
+    Object.assign(components, window['{{ script_id }}'].components);
+{% endfor %}
+    
+    window.pointofvue = new Vue({
+        el: '#app',
+        components: components,
+        delimiters: ['${','}'],
+        data: function() { return data; },
+        methods: {}
+    });
 </script>
 
