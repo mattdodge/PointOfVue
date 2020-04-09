@@ -15,8 +15,15 @@
 {% endfor %}
 
     var components = {};
+    var methods = {};
 {% for script_id in scripts %}
-    Object.assign(components, window['{{ script_id }}'].components);
+    const script = window['{{ script_id }}'].default;
+    const scriptComponents = script.components;
+    for (key in scriptComponents) {
+        const name = scriptComponents[key].name || key;
+        components[name] = scriptComponents[key];
+    }
+    Object.assign(methods, script.methods)
 {% endfor %}
     
     window.pointofvue = new Vue({
@@ -24,7 +31,7 @@
         components: components,
         delimiters: ['${','}'],
         data: function() { return data; },
-        methods: {}
+        methods: methods,
     });
 </script>
 
