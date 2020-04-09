@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 with open('requirements.txt') as f:
     reqs = f.read().splitlines()
 
-with open('yahoofantasy/__init__.py', 'r') as fd:
+with open('pointofvue/__init__.py', 'r') as fd:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                         fd.read(), re.MULTILINE).group(1)
 
