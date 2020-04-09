@@ -1,0 +1,2 @@
+include README.MD
+recursive-include pointofvue/templates *
