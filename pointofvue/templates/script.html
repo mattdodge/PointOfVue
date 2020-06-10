@@ -16,6 +16,7 @@
 
     var components = {};
     var methods = {};
+    var mounted = null;
 {% for script_id in scripts %}
     const script = window['{{ script_id }}'].default;
     const scriptComponents = script.components;
@@ -24,6 +25,10 @@
         components[name] = scriptComponents[key];
     }
     Object.assign(methods, script.methods)
+		if (script.mounted) {
+			// TODO: Can we support multiple mounted methods here?
+			mounted = script.mounted;
+		}
 {% endfor %}
     
     window.pointofvue = new Vue({
@@ -32,6 +37,7 @@
         delimiters: ['${','}'],
         data: function() { return data; },
         methods: methods,
+        mounted: mounted,
     });
 </script>
 
