@@ -73,3 +73,13 @@ Now you can use your custom component in your template:
     <MyCustomComponent />
 </div>
 ```
+
+## Development
+
+### Releasing
+I use [bump2version](https://github.com/c4urself/bump2version) to manage version bumping. This will update the version number in the library, commit it, and create a version tag.
+
+```bash
+bump2version minor
+git push
+```
