@@ -81,5 +81,5 @@ I use [bump2version](https://github.com/c4urself/bump2version) to manage version
 
 ```bash
 bump2version minor
-git push
+git push --follow-tags
 ```
