@@ -5,7 +5,7 @@
 
 {% load static %}
 {% for script_loc in script_locs %}
-<script src="{% static script_loc %}"></script>
+<script src="{% static script_loc %}" data-turbo-eval="false"></script>
 {% endfor %}
 
 <script>
