@@ -18,10 +18,10 @@
     var methods = {};
     var mounted = null;
 {% for script_id in scripts %}
-    const script = window['{{ script_id }}'].default;
-    const scriptComponents = script.components;
+    var script = window['{{ script_id }}'].default;
+    var scriptComponents = script.components;
     for (key in scriptComponents) {
-        const name = scriptComponents[key].name || key;
+        var name = scriptComponents[key].name || key;
         components[name] = scriptComponents[key];
     }
     Object.assign(methods, script.methods)
