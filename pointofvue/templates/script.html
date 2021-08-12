@@ -1,4 +1,8 @@
+{% if use_minified %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+{% else %}
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{% endif %}
 {% for data_name, data_val in data.items %}
 {{ data_val | json_script:data_name }}
 {% endfor %}

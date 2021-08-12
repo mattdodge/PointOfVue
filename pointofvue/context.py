@@ -1,4 +1,5 @@
 from os.path import join
+from .settings import get_setting
 
 
 class VueContext():
@@ -7,6 +8,7 @@ class VueContext():
         super().__init__(*args, **kwargs)
         self.data = {}
         self.scripts = []
+        # TODO: make this a setting
         self.static_base = join('build', 'js')
 
     def set_data(self, key, val):
@@ -19,10 +21,10 @@ class VueContext():
 
     def _to_render(self):
         """ Return a dictionary to use to render the template """
-        # TODO: Make it '.min.js' for prod
-        script_suffix = '.umd.js'
+        script_suffix = '.umd.min.js' if self._use_minified else '.umd.js'
         obj = {
             'data': self.data,
+            'use_minified': self._use_minified(),
             'scripts': self.scripts,
             'script_locs': [
                 join(
@@ -32,3 +34,12 @@ class VueContext():
             ],
         }
         return obj
+
+    def _use_minified(self):
+        return any([
+            get_setting('USE_MINIFIED', False),
+            get_setting('ENV', prefix=False) == 'prod',
+            get_setting('ENVIRONMENT', prefix=False) == 'prod',
+            get_setting('ENV', prefix=False) == 'production',
+            get_setting('ENVIRONMENT', prefix=False) == 'production',
+        ])
