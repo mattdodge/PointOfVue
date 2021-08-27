@@ -14,10 +14,6 @@
 
 <script>
     var data = {};
-{% for data_name in data %}
-    data['{{ data_name }}'] = JSON.parse(document.getElementById('{{ data_name }}').textContent);
-{% endfor %}
-
     var components = {};
     var methods = {};
     var mounted = null;
@@ -28,11 +24,15 @@
         var name = scriptComponents[key].name || key;
         components[name] = scriptComponents[key];
     }
-    Object.assign(methods, script.methods)
-		if (script.mounted) {
-			// TODO: Can we support multiple mounted methods here?
-			mounted = script.mounted;
-		}
+    Object.assign(data, script.data);
+    Object.assign(methods, script.methods);
+    if (script.mounted) {
+        // TODO: Can we support multiple mounted methods here?
+        mounted = script.mounted;
+    }
+{% endfor %}
+{% for data_name in data %}
+    data['{{ data_name }}'] = JSON.parse(document.getElementById('{{ data_name }}').textContent);
 {% endfor %}
     
     window.pointofvue = new Vue({
