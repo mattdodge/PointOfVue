@@ -27,7 +27,7 @@ def view_handler(request):
     vue_ctx.set_data('var1', 'My value')
 
     return render(request, 'template.html', {
-        vue_ctx: vue_ctx,
+        "vue_ctx": vue_ctx,
     })
 ```
 
