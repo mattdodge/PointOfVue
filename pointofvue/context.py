@@ -21,7 +21,7 @@ class VueContext():
 
     def _to_render(self):
         """ Return a dictionary to use to render the template """
-        script_suffix = '.umd.min.js' if self._use_minified else '.umd.js'
+        script_suffix = '.umd.min.js' if self._use_minified() else '.umd.js'
         obj = {
             'data': self.data,
             'use_minified': self._use_minified(),
