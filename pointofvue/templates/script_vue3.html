@@ -1,0 +1,47 @@
+{% if use_minified %}
+<script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.min.js"></script>
+{% else %}
+<script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+{% endif %}
+{% for data_name, data_val in data.items %}
+{{ data_val | json_script:data_name }}
+{% endfor %}
+
+{% load static %}
+{% for script_loc in script_locs %}
+<script src="{% static script_loc %}" data-turbo-eval="false"></script>
+{% endfor %}
+
+<script>
+    var data = {};
+    var components = {};
+    var methods = {};
+    var mounted = null;
+{% for script_id in scripts %}
+    var script = window['{{ script_id }}']
+    var scriptComponents = script.components;
+    for (key in scriptComponents) {
+        var name = scriptComponents[key].name || key;
+        components[name] = scriptComponents[key];
+    }
+    Object.assign(data, script.data);
+    Object.assign(methods, script.methods);
+    if (script.mounted) {
+        // TODO: Can we support multiple mounted methods here?
+        mounted = script.mounted;
+    }
+{% endfor %}
+{% for data_name in data %}
+    data['{{ data_name }}'] = JSON.parse(document.getElementById('{{ data_name }}').textContent);
+{% endfor %}
+    
+    window.pointofvue = Vue.createApp({
+        components: components,
+        delimiters: ['${','}'],
+        data: function() { return data; },
+        methods: methods,
+        mounted: mounted,
+    })
+    window.pointofvue.mount("#app");
+</script>
+
